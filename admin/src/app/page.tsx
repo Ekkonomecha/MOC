@@ -46,16 +46,16 @@ export default function Dashboard() {
 
 function DashboardCard({ title, value, trend, icon, bg }: { title: string, value: string, trend: string, icon: React.ReactNode, bg: string }) {
   return (
-    <div className={`${bg} p-6 rounded-[24px] shadow-sm border border-[#E7E0EC]/50 flex flex-col justify-between min-h-[160px] transition-shadow hover:shadow-md`}>
+    <div className={`${bg} p-6 rounded-[24px] shadow-sm border border-[#E7E0EC]/50 flex flex-col justify-between min-h-[160px] transition-all duration-300 hover:shadow-md hover:-translate-y-1`}>
       <div className="flex justify-between items-start">
         <p className="text-[#49454F] text-sm font-medium tracking-wide">{title}</p>
-        <div className="p-3 bg-white/40 rounded-full">
+        <div className="p-3 bg-white/40 rounded-full h-12 w-12 flex items-center justify-center">
           {icon}
         </div>
       </div>
       <div>
         <h3 className="text-[32px] leading-tight font-normal text-[#1C1B1F] mt-4">{value}</h3>
-        <p className="text-xs text-[#49454F] mt-1 font-medium">{trend}</p>
+        <p className="text-xs text-[#49454F] mt-1 font-medium tracking-wide">{trend}</p>
       </div>
     </div>
   );

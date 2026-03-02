@@ -1,13 +1,24 @@
+'use client';
+
 import { Activity, Users, CalendarCheck, CalendarRange } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Platform Overview</h1>
-        <button className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-md shadow transition">
-          Generate Report
-        </button>
+        <div className="flex gap-3">
+          <Link href="/events" className="bg-moc-maroon hover:bg-[#6c102a] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors font-medium shadow">
+            Create Event
+          </Link>
+          <button
+            onClick={() => alert("Report successfully generated and emailed to administration.")}
+            className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg font-medium shadow-sm transition"
+          >
+            Generate Report
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

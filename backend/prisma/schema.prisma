@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  nasId         String?        @unique // National Authentication System ID
+  email         String?        @unique
+  name          String
+  role          Role           @default(GUEST)
+  preferences   Json?
+  registrations Registration[]
+  appointments  Appointment[]
+  complaints    Complaint[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+enum Role {
+  GUEST
+  REGISTERED
+  ORGANIZER
+  EMPLOYEE
+  ADMIN
+}
+
+model Event {
+  id              String         @id @default(uuid())
+  organizerId     String
+  titleAr         String
+  titleEn         String
+  descriptionAr   String
+  descriptionEn   String
+  startDate       DateTime
+  endDate         DateTime
+  locationLat     Float?
+  locationLng     Float?
+  locationName    String
+  capacity        Int
+  price           Float          @default(0)
+  isVrEnabled     Boolean        @default(false)
+  hasLiveStream   Boolean        @default(false)
+  status          EventStatus    @default(DRAFT)
+  
+  registrations   Registration[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+}
+
+model Registration {
+  id            String             @id @default(uuid())
+  userId        String
+  eventId       String
+  paymentRef    String?
+  qrHash        String?            @unique
+  status        RegistrationStatus @default(PENDING)
+  
+  user          User               @relation(fields: [userId], references: [id])
+  event         Event              @relation(fields: [eventId], references: [id])
+
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Department {
+  id              String         @id @default(uuid())
+  nameAr          String
+  nameEn          String
+  configuredHours Json           // e.g. {"mon": {"start": "08:00", "end": "14:00"}}
+  maxConcurrent   Int            @default(5)
+  
+  appointments    Appointment[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Appointment {
+  id            String            @id @default(uuid())
+  userId        String
+  departmentId  String
+  slotStart     DateTime
+  slotEnd       DateTime
+  status        AppointmentStatus @default(PENDING)
+  notes         String?
+  
+  user          User              @relation(fields: [userId], references: [id])
+  department    Department        @relation(fields: [departmentId], references: [id])
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum AppointmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+model MediaContent {
+  id            String       @id @default(uuid())
+  type          MediaType
+  url           String
+  metaData      Json?
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+enum MediaType {
+  NEWS
+  PHOTO
+  VIDEO
+  PUBLICATION
+}
+
+model Complaint {
+  id            String           @id @default(uuid())
+  userId        String?
+  category      String
+  gpsLat        Float?
+  gpsLng        Float?
+  imageUrl      String?
+  status        ComplaintStatus  @default(SUBMITTED)
+  
+  user          User?            @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+enum ComplaintStatus {
+  SUBMITTED
+  IN_REVIEW
+  RESOLVED
+}

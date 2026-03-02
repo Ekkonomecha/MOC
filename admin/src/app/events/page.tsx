@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Edit2, Trash2, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Calendar } from 'lucide-react';
 
 const DUMMY_EVENTS = [
     { id: 1, title: 'Doha International Book Fair', date: '2026-05-10', status: 'Published', registrations: 1240 },
@@ -36,52 +36,52 @@ export default function EventsManager() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
+        <div className="space-y-8 max-w-7xl mx-auto">
+            <div className="flex justify-between items-center bg-[#F4EFF4] p-8 -mt-8 -mx-8 mb-8 border-b border-[#E7E0EC]">
                 <div>
-                    <h1 className="text-2xl font-bold font-moc-primary text-gray-900">Event Management</h1>
-                    <p className="text-gray-500 mt-1">Create, update, and monitor Ministry events.</p>
+                    <h1 className="text-[28px] leading-9 font-normal text-[#1C1B1F]">Event Management</h1>
+                    <p className="text-[#49454F] mt-1 text-sm tracking-wide">Create, update, and monitor Ministry events.</p>
                 </div>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-moc-maroon hover:bg-[#6c102a] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                    className="bg-[#8A1538] text-white px-6 py-4 rounded-2xl flex items-center gap-2 transition-all hover:bg-[#6c102a] hover:shadow-md font-medium tracking-wide"
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-5 h-5" />
                     Create Event
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-[#FFFBFE] rounded-[28px] shadow-sm border border-[#E7E0EC] overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50 border-b border-gray-100">
-                                <th className="p-4 font-semibold text-gray-600">Event Name</th>
-                                <th className="p-4 font-semibold text-gray-600">Date</th>
-                                <th className="p-4 font-semibold text-gray-600">Status</th>
-                                <th className="p-4 font-semibold text-gray-600">Registrations</th>
-                                <th className="p-4 font-semibold text-gray-600">Actions</th>
+                            <tr className="bg-[#F4EFF4] border-b border-[#E7E0EC]">
+                                <th className="px-6 py-4 text-sm font-semibold text-[#1C1B1F]">Event Name</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-[#1C1B1F]">Date</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-[#1C1B1F]">Status</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-[#1C1B1F]">Registrations</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-[#1C1B1F] text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-[#E7E0EC]/60">
                             {events.map((event) => (
-                                <tr key={event.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 font-medium text-gray-900">{event.title}</td>
-                                    <td className="p-4 text-gray-600">{event.date}</td>
-                                    <td className="p-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${event.status === 'Published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                                <tr key={event.id} className="hover:bg-[#F4EFF4]/30 transition-colors">
+                                    <td className="px-6 py-5 text-sm font-medium text-[#1C1B1F]">{event.title}</td>
+                                    <td className="px-6 py-5 text-sm tracking-wide text-[#49454F]">{event.date}</td>
+                                    <td className="px-6 py-5">
+                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold tracking-wide uppercase ${event.status === 'Published' ? 'bg-[#D7F9E9] text-[#005139]' : 'bg-[#E7E0EC] text-[#49454F]'
                                             }`}>
                                             {event.status}
                                         </span>
                                     </td>
-                                    <td className="p-4 text-gray-600">{event.registrations}</td>
-                                    <td className="p-4">
-                                        <div className="flex items-center gap-3">
-                                            <button className="text-gray-400 hover:text-moc-gold transition-colors">
-                                                <Edit2 className="w-4 h-4" />
+                                    <td className="px-6 py-5 text-sm text-[#49454F]">{event.registrations}</td>
+                                    <td className="px-6 py-5">
+                                        <div className="flex items-center justify-end gap-2">
+                                            <button className="p-2 text-[#49454F] hover:text-[#8A1538] hover:bg-[#FFD9E2] rounded-full transition-colors">
+                                                <Edit2 className="w-5 h-5" />
                                             </button>
-                                            <button onClick={() => handleDelete(event.id)} className="text-gray-400 hover:text-red-500 transition-colors">
-                                                <Trash2 className="w-4 h-4" />
+                                            <button onClick={() => handleDelete(event.id)} className="p-2 text-[#49454F] hover:text-red-700 hover:bg-red-50 rounded-full transition-colors">
+                                                <Trash2 className="w-5 h-5" />
                                             </button>
                                         </div>
                                     </td>
@@ -89,7 +89,7 @@ export default function EventsManager() {
                             ))}
                             {events.length === 0 && (
                                 <tr>
-                                    <td colSpan={5} className="p-8 text-center text-gray-500">No events found. Create one!</td>
+                                    <td colSpan={5} className="p-12 text-center text-[#49454F] text-sm">No events found. Create one!</td>
                                 </tr>
                             )}
                         </tbody>
@@ -97,62 +97,59 @@ export default function EventsManager() {
                 </div>
             </div>
 
-            {/* Modal overlays */}
+            {/* M3 Modal Dialog */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl shadow-lg max-w-md w-full overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                            <h2 className="text-xl font-bold text-gray-900">Create New Event</h2>
-                            <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
-                                <X className="w-5 h-5" />
-                            </button>
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
+                        <div className="px-6 pt-6 pb-4">
+                            <div className="flex justify-center mb-4 text-[#8A1538]">
+                                <Calendar className="w-6 h-6" />
+                            </div>
+                            <h2 className="text-2xl font-normal text-center text-[#1C1B1F]">Create New Event</h2>
                         </div>
-                        <form onSubmit={handleCreateEvent} className="p-6 space-y-4">
+                        <form onSubmit={handleCreateEvent} className="p-6 pt-0 space-y-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
                                 <input
                                     type="text"
                                     value={newEvent.title}
                                     onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-moc-maroon/20 focus:border-moc-maroon"
-                                    placeholder="e.g. National Art Exhibition"
+                                    className="w-full px-4 py-4 bg-[#F4EFF4] border-b-2 border-[#49454F] rounded-t-[4px] focus:outline-none focus:border-[#8A1538] text-[#1C1B1F] placeholder-[#49454F]"
+                                    placeholder="Event Title"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
                                 <input
                                     type="date"
                                     value={newEvent.date}
                                     onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-moc-maroon/20 focus:border-moc-maroon"
+                                    className="w-full px-4 py-4 bg-[#F4EFF4] border-b-2 border-[#49454F] rounded-t-[4px] focus:outline-none focus:border-[#8A1538] text-[#1C1B1F] placeholder-[#49454F]"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                                 <select
                                     value={newEvent.status}
                                     onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-moc-maroon/20 focus:border-moc-maroon"
+                                    className="w-full px-4 py-4 bg-[#F4EFF4] border-b-2 border-[#49454F] rounded-t-[4px] focus:outline-none focus:border-[#8A1538] text-[#1C1B1F]"
                                 >
                                     <option value="Draft">Draft</option>
                                     <option value="Published">Published</option>
                                 </select>
                             </div>
-                            <div className="pt-4 flex justify-end gap-3">
+                            <div className="pt-6 flex justify-end gap-2">
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors font-medium"
+                                    className="px-6 py-2.5 text-[#8A1538] hover:bg-[#FFD9E2]/50 rounded-full transition-colors font-medium text-sm tracking-wide"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-moc-maroon hover:bg-[#6c102a] text-white rounded-lg transition-colors font-medium"
+                                    className="px-6 py-2.5 bg-[#8A1538] hover:bg-[#6c102a] text-white rounded-full transition-colors font-medium text-sm tracking-wide"
                                 >
-                                    Save Event
+                                    Save
                                 </button>
                             </div>
                         </form>

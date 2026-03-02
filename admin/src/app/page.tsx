@@ -1,6 +1,6 @@
 'use client';
 
-import { Activity, Users, CalendarCheck, CalendarRange } from 'lucide-react';
+import { Activity, Users, CalendarCheck, CalendarRange, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Dashboard() {
@@ -13,7 +13,7 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-4">
           <Link href="/events" className="bg-[#FFD9E2] text-[#3E0015] px-6 py-3.5 rounded-2xl flex items-center gap-2 transition-all hover:bg-[#ffb4c8] hover:shadow-md font-medium tracking-wide">
-            <span className="material-icons">add</span>
+            <Plus className="w-5 h-5" />
             New Event
           </Link>
           <button

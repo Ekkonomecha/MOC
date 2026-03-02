@@ -1,9 +1,12 @@
 'use client';
 
-import { Activity, Users, CalendarCheck, CalendarRange, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { Activity, Users, CalendarCheck, CalendarRange, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Dashboard() {
+  const [selectedInquiry, setSelectedInquiry] = useState<{ user: string, query: string, status: string } | null>(null);
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center">
@@ -35,11 +38,42 @@ export default function Dashboard() {
       <div className="bg-[#FFFBFE] rounded-[28px] shadow-sm border border-[#E7E0EC] p-8 mt-8">
         <h2 className="text-xl font-medium text-[#1C1B1F] mb-6">Recent AI Context Analytics</h2>
         <div className="space-y-0 divide-y divide-[#E7E0EC]">
-          <InquiryRow user="Ahmed M." query="When does the book fair open?" status="Resolved" />
-          <InquiryRow user="Sarah K." query="How to book an appointment with the licensing dept?" status="Escalated" />
-          <InquiryRow user="Majed A." query="Cancel my Friday event ticket." status="Resolved" />
+          <InquiryRow user="Ahmed M." query="When does the book fair open?" status="Resolved" onClick={() => setSelectedInquiry({ user: "Ahmed M.", query: "When does the book fair open?", status: "Resolved" })} />
+          <InquiryRow user="Sarah K." query="How to book an appointment with the licensing dept?" status="Escalated" onClick={() => setSelectedInquiry({ user: "Sarah K.", query: "How to book an appointment with the licensing dept?", status: "Escalated" })} />
+          <InquiryRow user="Majed A." query="Cancel my Friday event ticket." status="Resolved" onClick={() => setSelectedInquiry({ user: "Majed A.", query: "Cancel my Friday event ticket.", status: "Resolved" })} />
         </div>
       </div>
+
+      {/* M3 Modal Dialog */}
+      {selectedInquiry && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
+            <div className="px-6 py-4 border-b border-[#E7E0EC] flex justify-between items-center">
+              <h2 className="text-xl font-medium text-[#1C1B1F]">Inquiry Details</h2>
+              <button onClick={() => setSelectedInquiry(null)} className="text-[#49454F] hover:bg-[#E7E0EC] p-2 rounded-full transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 space-y-6">
+              <div>
+                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">User</label>
+                <p className="text-[#1C1B1F] font-medium">{selectedInquiry.user}</p>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Status</label>
+                <span className={`px-3 py-1 rounded-lg text-xs font-bold tracking-wide uppercase inline-block ${selectedInquiry.status === 'Resolved' ? 'bg-[#D7F9E9] text-[#005139]' : 'bg-[#FFD9E2] text-[#3E0015]'
+                  }`}>
+                  {selectedInquiry.status}
+                </span>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Original Query</label>
+                <p className="text-[#1C1B1F] bg-[#F4EFF4] p-4 rounded-xl leading-relaxed">"{selectedInquiry.query}"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -61,20 +95,20 @@ function DashboardCard({ title, value, trend, icon, bg }: { title: string, value
   );
 }
 
-function InquiryRow({ user, query, status }: { user: string, query: string, status: string }) {
+function InquiryRow({ user, query, status, onClick }: { user: string, query: string, status: string, onClick: () => void }) {
   const isResolved = status === 'Resolved';
   const statusBg = isResolved ? 'bg-[#D7F9E9]' : 'bg-[#FFD9E2]';
   const statusText = isResolved ? 'text-[#005139]' : 'text-[#3E0015]';
 
   return (
-    <div className="flex justify-between items-center py-5 transition-colors hover:bg-[#F4EFF4]/50 hover:px-4 rounded-xl -mx-4 px-4 cursor-default">
+    <div onClick={onClick} className="flex justify-between items-center py-5 transition-colors hover:bg-[#F4EFF4] active:bg-[#E7E0EC] hover:px-4 rounded-xl -mx-4 px-4 cursor-pointer">
       <div className="flex items-center gap-4">
         <div className="w-10 h-10 rounded-full bg-[#E7E0EC] flex items-center justify-center text-[#49454F] font-bold">
           {user.charAt(0)}
         </div>
         <div>
           <p className="text-sm font-semibold text-[#1C1B1F]">{user}</p>
-          <p className="text-sm text-[#49454F] mt-0.5">"{query}"</p>
+          <p className="text-sm text-[#49454F] mt-0.5 max-w-sm truncate">"{query}"</p>
         </div>
       </div>
       <span className={`px-3 py-1 rounded-lg text-xs font-bold tracking-wide uppercase ${statusBg} ${statusText}`}>

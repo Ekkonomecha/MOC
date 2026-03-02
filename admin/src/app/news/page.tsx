@@ -11,6 +11,7 @@ const DUMMY_NEWS = [
 export default function NewsManager() {
     const [news, setNews] = useState(DUMMY_NEWS);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedArticle, setSelectedArticle] = useState<{ id: number, title: string, date: string, author: string, views: number } | null>(null);
     const [newArticle, setNewArticle] = useState({ title: '', author: '' });
 
     const handleCreateArticle = (e: React.FormEvent) => {
@@ -64,6 +65,9 @@ export default function NewsManager() {
                             </div>
                         </div>
                         <div className="flex gap-2">
+                            <button onClick={() => setSelectedArticle(item)} className="p-3 text-[#49454F] hover:text-[#2D1F0D] hover:bg-[#F2D8B3] rounded-full transition-colors bg-white">
+                                <Eye className="w-5 h-5" />
+                            </button>
                             <button className="p-3 text-[#49454F] hover:text-[#8A1538] hover:bg-[#F4EFF4] rounded-full transition-colors bg-white">
                                 <Edit2 className="w-5 h-5" />
                             </button>
@@ -80,7 +84,7 @@ export default function NewsManager() {
                 )}
             </div>
 
-            {/* M3 Modal Dialog */}
+            {/* M3 Modal Dialog - Create Form */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
@@ -127,6 +131,40 @@ export default function NewsManager() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* M3 Modal Dialog - View Details */}
+            {selectedArticle && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
+                        <div className="px-6 py-4 border-b border-[#E7E0EC] flex justify-between items-center">
+                            <h2 className="text-xl font-medium text-[#1C1B1F]">Article Details</h2>
+                            <button onClick={() => setSelectedArticle(null)} className="text-[#49454F] hover:bg-[#E7E0EC] p-2 rounded-full transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-6">
+                            <div>
+                                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Headline</label>
+                                <p className="text-[#1C1B1F] bg-[#F4EFF4] p-4 rounded-xl leading-relaxed font-medium">{selectedArticle.title}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Publishing Dept</label>
+                                    <p className="text-[#1C1B1F] font-medium">{selectedArticle.author}</p>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Date</label>
+                                    <p className="text-[#1C1B1F] font-medium">{selectedArticle.date}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Views</label>
+                                <p className="text-[#1C1B1F] font-medium flex items-center gap-2"><Eye className="w-4 h-4 text-[#8A1538]" /> {selectedArticle.views} User Impressions</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

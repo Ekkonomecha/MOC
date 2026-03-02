@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Edit2, Trash2, X, Calendar } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Calendar, Eye } from 'lucide-react';
 
 const DUMMY_EVENTS = [
     { id: 1, title: 'Doha International Book Fair', date: '2026-05-10', status: 'Published', registrations: 1240 },
@@ -12,6 +12,7 @@ const DUMMY_EVENTS = [
 export default function EventsManager() {
     const [events, setEvents] = useState(DUMMY_EVENTS);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<{ id: number, title: string, date: string, status: string, registrations: number } | null>(null);
     const [newEvent, setNewEvent] = useState({ title: '', date: '', status: 'Draft' });
 
     const handleCreateEvent = (e: React.FormEvent) => {
@@ -77,6 +78,9 @@ export default function EventsManager() {
                                     <td className="px-6 py-5 text-sm text-[#49454F]">{event.registrations}</td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center justify-end gap-2">
+                                            <button onClick={() => setSelectedEvent(event)} className="p-2 text-[#49454F] hover:text-[#2D1F0D] hover:bg-[#F2D8B3] rounded-full transition-colors">
+                                                <Eye className="w-5 h-5" />
+                                            </button>
                                             <button className="p-2 text-[#49454F] hover:text-[#8A1538] hover:bg-[#FFD9E2] rounded-full transition-colors">
                                                 <Edit2 className="w-5 h-5" />
                                             </button>
@@ -97,7 +101,7 @@ export default function EventsManager() {
                 </div>
             </div>
 
-            {/* M3 Modal Dialog */}
+            {/* M3 Modal Dialog - Create Form */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
@@ -153,6 +157,43 @@ export default function EventsManager() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* M3 Modal Dialog - View Details */}
+            {selectedEvent && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-[#FFFBFE] rounded-[28px] shadow-xl max-w-sm w-full overflow-hidden">
+                        <div className="px-6 py-4 border-b border-[#E7E0EC] flex justify-between items-center">
+                            <h2 className="text-xl font-medium text-[#1C1B1F]">Event Details</h2>
+                            <button onClick={() => setSelectedEvent(null)} className="text-[#49454F] hover:bg-[#E7E0EC] p-2 rounded-full transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-6">
+                            <div>
+                                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Title</label>
+                                <p className="text-[#1C1B1F] bg-[#F4EFF4] p-4 rounded-xl leading-relaxed font-medium">{selectedEvent.title}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Date</label>
+                                    <p className="text-[#1C1B1F] font-medium">{selectedEvent.date}</p>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Registrations</label>
+                                    <p className="text-[#1C1B1F] font-medium">{selectedEvent.registrations}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-[#49454F] tracking-wide uppercase mb-1">Status</label>
+                                <span className={`px-3 py-1 rounded-lg text-xs font-bold tracking-wide uppercase inline-block ${selectedEvent.status === 'Published' ? 'bg-[#D7F9E9] text-[#005139]' : 'bg-[#E7E0EC] text-[#49454F]'
+                                    }`}>
+                                    {selectedEvent.status}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

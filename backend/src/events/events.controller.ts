@@ -44,6 +44,6 @@ export class EventsController {
   @Post(':eventId/register')
   async registerForEvent(@Param('eventId') eventId: string, @Body() body: any) {
     // Expects { "userId": string, "attendeeCount": number }
-    return this.eventsService.initiateRegistration(eventId, body.userId, body.attendeeCount);
+    return this.eventsService.registerForEvent(eventId, body.userId, body);
   }
 }
